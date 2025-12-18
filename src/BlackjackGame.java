@@ -14,49 +14,33 @@ public class BlackjackGame {
 		return s;
 	}
 
-	private static String printRules() {
-		System.out.println("Welcome to blackjack! Do you need the rules?");
-		String answers = TextIO.getlnString();
-		if (answers.equals("yes")) {
-			System.out.println("The rules go as follow: \nYou can hit (place another card)\n"
-					+ "stand (move turns)\ndouble down (final card and double bet)\n"
-					+ "or split (only when you get two of the same card pair)");
-			System.out
-					.println("Get as close as you can to 21. If you hit 21, that's a blackjack! Your bet is doubled \n"
-							+ "If you lose to the dealer, you lose your bet :( \n"
-							+ "If you go over 21, that's a bust. You lose your bet.\n"
-							+ "Tie with the dealer and your bet is split in half.\nGood luck!");
-			System.out.println();
-			System.out.println();
-		} else {
-			System.out.println("Okay then, good luck!");
-			System.out.println();
-			System.out.println();
-		}
-		return "";
-	}
-
 	public static void main(String[] Args) {
-		
+
 		Deck d = new Deck();
 		d.shuffle();
-		Player player = new Player("Deven", 300);		
-		Player dealer = new Player("Dealer", 100000); // dealers bankroll??
-		
-		player.initialDeal(d);
-		dealer.initialDeal(d);
-		player.playHand(d);
-		dealer.dealerHand(d, player);
+		Player player = new Player("Player", 300);
+		Dealer dealer = new Dealer(); // dealers bankroll??
 
-		
-		if (dealer.hand.compare(player.hand) > 0) {
-			System.out.println("Dealer has won");
-		} else if (player.hand.compare(dealer.hand) > 0) {
-			System.out.println("You win!");
-		} else {
-			System.out.println("tied. Half of your money is taken");
+		while (true) {
+			player.initialDeal(d);
+			dealer.initialDeal(d);
+			player.playHand(d);
+			dealer.playHand(d, player);
+
+			if (dealer.hand.compare(player.hand) > 0) {
+				System.out.println("Dealer has won");
+			} else if (player.hand.compare(dealer.hand) > 0) {
+				System.out.println("You win!");
+				player.chips += 2 * player.bet;
+			} else {
+				System.out.println("tied. bet returned");
+				player.chips += player.bet;
+			}
+			// put the cards back into the deck.
+			d.getCards().addAll(player.getHand().getCards());
+			d.getCards().addAll(dealer.getHand().getCards());
+			d.shuffle();
+			System.out.println("your bankroll is currently: " + player.getBankroll());
 		}
-		
-
 	}
 }

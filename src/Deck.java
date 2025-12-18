@@ -29,6 +29,10 @@ public class Deck {
 		}
 	}
 	
+	public ArrayList<Card> getCards() { 
+		return cards;
+	}
+	
 	public Card deal() {
 		return cards.remove(0); //takes off top card (index 0) and "places on table"
 	}

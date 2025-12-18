@@ -21,9 +21,8 @@ public class Hand {
 
 	public int highValue() { // check if there's an Ace. If so, return 10, if not, return value.
 		for (Card c : hand) {
-			if (c.getValue() == 1) {
+			if (c.getValue() == 1 && c.isFaceUp()) {
 				return value() + 10;
-
 			}
 		}
 		return value();
@@ -33,7 +32,7 @@ public class Hand {
 		
 		if (value() > 21)
 			return -1;
-		if(highValue() < 21) {
+		if(highValue() <= 21) {
 			return highValue();
 		} else {
 			return value();
